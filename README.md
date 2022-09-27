@@ -21,18 +21,19 @@ sudo apt-get install python3.10
 
 ### Alterações necessarias
 
-Criar senha para user root
+#### Criar senha para user root
 ```
 sudo passwd root
 password: (digite a senha criada na instalação)  
 New Password Unix: (digite a senha que será do root)  
 Repeat Password Unix: (repita a senha que será do root)
 ```
-Definir seu usuario como Sudoer
+#### Definir seu usuario como Sudoer
+Nesse momento vamos ter criar um arquivo e adicionar uma linha dentro dele:
 ```
-sudo vim /etc/sudoers.d/<nome do seu usuario>
+sudo vim /etc/sudoers.d/<Seu_Usuario>
 
-
+Seu_Usuario ALL=(ALL) NOPASSWD: ALL
 ```
 
 ### Ansible
@@ -40,7 +41,31 @@ sudo vim /etc/sudoers.d/<nome do seu usuario>
 Vamos utilizar o playbook: https://galaxy.ansible.com/florianutz/ubuntu2004_cis
 Unico motivo é por ser da mesma versão do SO utilizado.
 
+### Excussão
 
+Para rodar os arquivos de configuração baixados pelo comando :
+```
+ansible-galaxy install florianutz.ubuntu2004_cis
+```
+vamos criar um arquivos chamado playbook.yml na home do nosso usuario, nele contendo :
+~vim playbook.yml
+```
+- hosts: all
+  roles:
+         - { role: florianutz.ubuntu2004_cis }  
+```
+Tambem vamos criar nosso arquivos Hosts com com a tag all:
+~vim hosts
+```
+[all]
+192.168.0.1
+```
+Você deve trocar o ip para o que você configurou na outra maquina
+
+se todos passos foram seguidos corretamente basta rodar o comando:
+```
+ansible-playbook playbook -i hosts
+```
 
 ---
 Referencias:
